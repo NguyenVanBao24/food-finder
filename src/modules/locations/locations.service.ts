@@ -115,8 +115,7 @@ export class LocationsService {
             .select(
                 `
         *,
-        photos(id, url, is_primary),
-        submitted_by_user:users!locations_submitted_by_fkey(id, name)
+        photos(id, url, is_primary)
       `,
             )
             .eq('id', id)
@@ -127,8 +126,32 @@ export class LocationsService {
             throw new NotFoundException(`Location with ID '${id}' not found`);
         }
 
-        // TODO: Add tag statistics and user's favorite status
-        // This will be implemented when we add location_tags and favorites modules
+        // Get tag statistics
+        const { data: tagVotes } = await supabase
+            .from('location_tags')
+            .select('tag_id, tags(name_vi)')
+            .eq('location_id', id);
+
+        const stats: any = {};
+        tagVotes?.forEach((v: any) => {
+            if (!stats[v.tag_id]) {
+                stats[v.tag_id] = { name: v.tags.name_vi, count: 0 };
+            }
+            stats[v.tag_id].count++;
+        });
+
+        data.tagStats = Object.values(stats);
+
+        // Check if favorited by current user
+        if (userId) {
+            const { data: favorite } = await supabase
+                .from('favorites')
+                .select('id')
+                .eq('location_id', id)
+                .eq('user_id', userId)
+                .single();
+            data.isFavorite = !!favorite;
+        }
 
         return data;
     }

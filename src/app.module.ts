@@ -6,6 +6,8 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
 import { LocationTagsModule } from './modules/location-tags/location-tags.module';
 import { PhotosModule } from './modules/photos/photos.module';
 
+import { CategoriesModule } from './modules/categories/categories.module';
+
 @Module({
   imports: [
     LocationsModule,
@@ -14,6 +16,7 @@ import { PhotosModule } from './modules/photos/photos.module';
     FavoritesModule,
     LocationTagsModule,
     PhotosModule,
+    CategoriesModule,
   ],
   controllers: [],
   providers: [],

@@ -16,7 +16,14 @@ export interface Location {
     district_en?: string;
     cuisine_vi: string;
     cuisine_en?: string;
-    category: 'food' | 'cafe' | 'bar';
+    category?: string; // Legacy
+    category_id?: string;
+    categories?: {
+        name_vi: string;
+        name_en?: string;
+        icon?: string;
+        slug: string;
+    };
     phone?: string;
     website?: string;
     hours_open?: string;

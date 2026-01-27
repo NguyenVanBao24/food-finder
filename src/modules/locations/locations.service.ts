@@ -46,6 +46,7 @@ export class LocationsService {
             tags,
             search,
             category,
+            category_id,
         } = filters;
 
         const supabase = createPublicClient();
@@ -69,7 +70,9 @@ export class LocationsService {
             query = query.eq('price_range', priceRange);
         }
 
-        if (category) {
+        if (category_id) {
+            query = query.eq('category_id', category_id);
+        } else if (category) {
             query = query.eq('category', category);
         }
 
@@ -115,7 +118,8 @@ export class LocationsService {
             .select(
                 `
         *,
-        photos(id, url, is_primary)
+        photos(id, url, is_primary),
+        categories(id, name_vi, name_en, icon, slug)
       `,
             )
             .eq('id', id)

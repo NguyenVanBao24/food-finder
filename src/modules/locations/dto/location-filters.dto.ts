@@ -33,5 +33,9 @@ export class LocationFiltersDto extends PaginationDto {
 
     @IsOptional()
     @IsString()
-    category?: string; // food | cafe | bar
+    category?: string;
+
+    @IsOptional()
+    @IsString()
+    category_id?: string; // food | cafe | bar
 }

@@ -11,17 +11,7 @@ import { Tag } from './entities/tag.entity';
  */
 @Injectable()
 export class TagsService {
-    /**
-     * Get all tags grouped by category
-     * 
-     * @returns Object with positive and negative tags
-     * @example
-     * {
-     *   positive: [{ id: '...', name_vi: 'Ăn ngon', ... }],
-     *   negative: [{ id: '...', name_vi: 'Đắt', ... }]
-     * }
-     */
-    async findAll(): Promise<{ positive: Tag[]; negative: Tag[] }> {
+    async findAll(): Promise<Tag[]> {
         const supabase = createPublicClient();
 
         const { data, error } = await supabase
@@ -33,11 +23,7 @@ export class TagsService {
             throw new Error('Failed to fetch tags');
         }
 
-        // Group tags by category
-        const positive = data.filter((tag) => tag.category === 'positive');
-        const negative = data.filter((tag) => tag.category === 'negative');
-
-        return { positive, negative };
+        return data;
     }
 
     /**
